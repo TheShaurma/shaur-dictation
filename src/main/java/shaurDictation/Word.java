@@ -21,4 +21,19 @@ public class Word {
     public String toString() {
         return "Word(" + getCorrect() + ", " + getTranscription() + ")";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Word)) {
+            return false;
+        } else {
+            var other = (Word) o;
+            return getCorrect().equals(other.getCorrect()) && getTranscription().equals(other.getTranscription());
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return (getCorrect() + getTranscription()).hashCode();
+    }
 }

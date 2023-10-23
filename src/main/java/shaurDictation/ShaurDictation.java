@@ -1,7 +1,11 @@
 package shaurDictation;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
+
+import shaurDictation.read.WordsReader;
+import shaurDictation.write.WordWriter;
 
 /**
  * Hello world!
@@ -24,28 +28,41 @@ public class ShaurDictation {
             String input = scanner.nextLine();
 
             if (input.equals(START_STRING)) {
-                System.out.println("Dictation isn't developed yet.");
-                System.out.println();
+                startDictationMode();
             } else if (input.equals(WORD_STRING)) {
-                while (true) {
-                    System.out.println("Welcome to words redacting mode.");
-                    System.out.println("Type correct word or \"quit\" to quit:");
-                    input = scanner.nextLine();
-
-                    if (input.equals(QUIT_STRING)) {
-                        break;
-                    } else {
-                        String correct = input;
-                        System.out.println("Type transcription:");
-                        String transcription = scanner.nextLine();
-
-                        Word word = new Word(correct, transcription);
-                        wordWriter.writeWord(word);
-                        System.out.println("Word successfully written.");
-                    }
-                }
+                startWordsMode();
             } else if (input.equals(QUIT_STRING)) {
                 break;
+            }
+        }
+
+    }
+
+    private static void startDictationMode() throws IOException {
+        System.out.println("Welcome to dictation mode.");
+        System.out.println("All default words:");
+        String sep = File.separator;
+        for (Word word : WordsReader.readWordsInPackage("src" + sep + "main" + sep + "data" + "default")) {
+            System.out.println(word);
+        }
+    }
+
+    protected static void startWordsMode() throws IOException {
+        while (true) {
+            System.out.println("Welcome to words redacting mode.");
+            System.out.println("Type correct word or \"quit\" to quit:");
+            String input = scanner.nextLine();
+
+            if (input.equals(QUIT_STRING)) {
+                break;
+            } else {
+                String correct = input;
+                System.out.println("Type transcription:");
+                String transcription = scanner.nextLine();
+
+                Word word = new Word(correct, transcription);
+                wordWriter.writeWord(word);
+                System.out.println("Word successfully written.");
             }
         }
     }
